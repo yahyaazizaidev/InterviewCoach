@@ -1,97 +1,375 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# InterviewCoach
 
-# Getting Started
+InterviewCoach is a React Native and Python-based interview preparation application. The purpose of this app is to help users practice interview questions, record interview responses, analyze their performance, and receive AI-based feedback.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+The system uses a mobile frontend, a Python backend, a MySQL database, and trained machine learning models to evaluate interview performance.
 
-## Step 1: Start Metro
+---
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Project Purpose
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+The main purpose of InterviewCoach is to help students and job seekers improve their interview skills.
 
-```sh
-# Using npm
-npm start
+The app allows users to:
 
-# OR using Yarn
-yarn start
+* Create or select interview fields
+* View interview questions
+* Record interview video responses
+* Analyze interview performance
+* Get feedback based on facial, audio, posture, and speech features
+* View interview history and results
+
+This project is designed as an AI-based interview coaching system.
+
+---
+
+## Technologies Used
+
+### Frontend
+
+* React Native
+* TypeScript
+* Android
+* iOS project structure
+* Node.js / npm
+
+### Backend
+
+* Python
+* Flask
+* MySQL
+* Machine Learning models
+* Video/audio feature extraction
+
+### Database
+
+* MySQL Workbench 8.0
+
+### Machine Learning
+
+The project uses trained ML model files for interview performance prediction and analysis.
+
+Included model/helper files:
+
+```text
+confidence_predictor.cbm
+feature_scaler.pkl
+model_columns.pkl
 ```
 
-## Step 2: Build and run your app
+The main trained model file is not included in this GitHub repository because it is larger than GitHub's 100 MB file size limit.
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+Download the main model file from Google Drive:
 
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+```text
+https://drive.google.com/file/d/1Xic--cVkrYDZmt0vt5XEHd63tWx-7MhF/view?usp=sharing
 ```
 
-### iOS
+After downloading, place it in the project root folder:
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+```text
+InterviewCoach/interview_coach_model.pkl
 ```
 
-Then, and every time you update your native dependencies, run:
+The final structure should look like this:
 
-```sh
-bundle exec pod install
+```text
+InterviewCoach/
+│
+├── interview_coach_model.pkl
+├── confidence_predictor.cbm
+├── feature_scaler.pkl
+├── model_columns.pkl
+├── main.py
+├── test.py
+├── extractor.py
+├── predict_ai.py
+├── package.json
+└── Screens/
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+---
 
-```sh
-# Using npm
-npm run ios
+## Database Setup
 
-# OR using Yarn
-yarn ios
+This project uses MySQL.
+
+The database name must be:
+
+```text
+interviewcoach
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+Create a MySQL database with this exact name before importing the dump.
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+### Step 1: Create Database
 
-## Step 3: Modify your app
+Open MySQL Workbench and run:
 
-Now that you have successfully run the app, let's make changes!
+```sql
+CREATE DATABASE interviewcoach;
+```
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+### Step 2: Import Database Dump
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+The database dump is available inside the project folder:
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+```text
+database/mysql_dump/
+```
 
-## Congratulations! :tada:
+or:
 
-You've successfully run and modified your React Native App. :partying_face:
+```text
+database/Dump20260605/
+```
 
-### Now what?
+depending on the exported folder name.
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+To import it using MySQL Workbench:
 
-# Troubleshooting
+1. Open MySQL Workbench.
+2. Connect to your MySQL server.
+3. Go to:
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+```text
+Server > Data Import
+```
 
-# Learn More
+4. Select:
 
-To learn more about React Native, take a look at the following resources:
+```text
+Import from Dump Project Folder
+```
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+5. Select the dump folder from the project:
+
+```text
+InterviewCoach/database/mysql_dump
+```
+
+6. Select target schema:
+
+```text
+interviewcoach
+```
+
+7. Click:
+
+```text
+Start Import
+```
+
+---
+
+## Python Virtual Environment Setup
+
+This project requires a Python virtual environment named:
+
+```text
+venv310
+```
+
+Python 3.10 is recommended.
+
+### Step 1: Create Virtual Environment
+
+Open PowerShell or CMD inside the project folder:
+
+```powershell
+cd C:\reactnativeprojects\InterviewCoach
+```
+
+Create the virtual environment:
+
+```powershell
+py -3.10 -m venv venv310
+```
+
+If `py -3.10` does not work, use:
+
+```powershell
+python -m venv venv310
+```
+
+### Step 2: Activate Virtual Environment
+
+```powershell
+venv310\Scripts\activate
+```
+
+After activation, you should see something like:
+
+```text
+(venv310) PS C:\reactnativeprojects\InterviewCoach>
+```
+
+### Step 3: Upgrade pip
+
+```powershell
+python -m pip install --upgrade pip
+```
+
+### Step 4: Install Python Libraries
+
+If the project contains a `requirements.txt` file, install all dependencies using:
+
+```powershell
+pip install -r requirements.txt
+```
+
+If `requirements.txt` is not available, install the required libraries manually:
+
+```powershell
+pip install flask flask-cors mysql-connector-python numpy pandas scikit-learn opencv-python mediapipe librosa soundfile moviepy catboost joblib
+```
+
+If any library gives an error, install it separately.
+
+---
+
+## Node.js / React Native Setup
+
+Install frontend dependencies:
+
+```powershell
+npm install
+```
+
+For Android, run:
+
+```powershell
+npx react-native run-android
+```
+
+If Metro does not start automatically, run:
+
+```powershell
+npx react-native start
+```
+
+---
+
+## Running the Backend
+
+Activate the Python virtual environment:
+
+```powershell
+venv310\Scripts\activate
+```
+
+Run the backend file:
+
+```powershell
+python main.py
+```
+
+If your backend starts from another file, use that file instead, for example:
+
+```powershell
+python test.py
+```
+
+---
+
+## Running the Complete Project
+
+### Step 1: Start MySQL Server
+
+Make sure MySQL Server is running.
+
+### Step 2: Import Database
+
+Import the database dump into a database named:
+
+```text
+interviewcoach
+```
+
+### Step 3: Download Main Model File
+
+Download the missing model file from Google Drive:
+
+```text
+https://drive.google.com/file/d/1Xic--cVkrYDZmt0vt5XEHd63tWx-7MhF/view?usp=sharing
+```
+
+Place it in the project root:
+
+```text
+InterviewCoach/interview_coach_model.pkl
+```
+
+### Step 4: Start Python Backend
+
+```powershell
+cd C:\reactnativeprojects\InterviewCoach
+venv310\Scripts\activate
+python main.py
+```
+
+### Step 5: Start React Native App
+
+Open another terminal:
+
+```powershell
+cd C:\reactnativeprojects\InterviewCoach
+npm install
+npx react-native run-android
+```
+
+---
+
+## How the App Works
+
+1. The user opens the mobile application.
+2. The app connects with the backend server.
+3. The user selects an interview field or question.
+4. The user records an interview video response.
+5. The backend processes the video.
+6. Feature extraction is performed using Python.
+7. The trained ML models analyze the response.
+8. The system predicts interview performance.
+9. The result is saved in MySQL.
+10. The user can view feedback and interview history inside the app.
+
+---
+
+## Important Files
+
+```text
+App.tsx
+Screens/
+main.py
+test.py
+extractor.py
+predict_ai.py
+config.py
+config.js
+database/
+confidence_predictor.cbm
+feature_scaler.pkl
+model_columns.pkl
+```
+
+The missing large model file must be downloaded separately:
+
+```text
+interview_coach_model.pkl
+```
+
+---
+
+## Notes
+
+* Do not delete the `venv310` environment if the backend is already configured with it.
+* The database must be named exactly `interviewcoach`.
+* The file `interview_coach_model.pkl` must be placed in the root project folder.
+* MySQL Server must be running before using the backend.
+* Android emulator or physical Android device is required to run the mobile app.
+
+---
+
+## Author
+
+Developed by Yahya Aziz AI Developer.
