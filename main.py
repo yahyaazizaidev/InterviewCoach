@@ -19,8 +19,8 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 def get_db_connection():
     return mysql.connector.connect(
         host="localhost",            # MySQL server
-        user="root",                 # change if different
-        password="Amysql_1",    # change to your MySQL password
+        user="",                 # change if different
+        password="",    # change to your MySQL password
         database="InterviewCoach",   # your DB name
         port=3306
     )
